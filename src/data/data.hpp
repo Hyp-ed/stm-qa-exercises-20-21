@@ -95,6 +95,7 @@ enum State {
   kHeating,
   kIdling,
   kEmergency,
+  num_states
 
 };
 

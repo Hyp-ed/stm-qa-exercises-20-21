@@ -1,0 +1,4 @@
+#ifndef OVEN_STATE_MACHINE_MAIN_HPP_
+#define OVEN_STATE_MACHINE_MAIN_HPP_
+
+#endif

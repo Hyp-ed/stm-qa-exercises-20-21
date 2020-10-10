@@ -1,0 +1,4 @@
+#ifndef OVEN_THERMOMETER_MAIN_HPP_
+#define OVEN_THERMOMETER_MAIN_HPP_
+
+#endif

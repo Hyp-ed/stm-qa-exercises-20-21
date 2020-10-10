@@ -69,6 +69,14 @@ struct Telemetry {
   uint32_t target_temperature;
 }
 
+//
+// Motor
+//
+struct Motor{
+  bool critical_failure;
+  float rate;
+}
+
 // -------------------------------------------------------------------------------------------------
 // Common Data structure/class
 // -------------------------------------------------------------------------------------------------

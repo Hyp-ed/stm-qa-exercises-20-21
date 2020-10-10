@@ -1,37 +1,16 @@
-# Exercises for State Machine and QA
+![HYPED Logo](https://lh3.googleusercontent.com/HXddGxe74B71zXgdCmKqgaq0IW9OO5Udb-JcfPvemVwq9ux3Uiiz-myL00ew6hoVPaB8Z8CNopeW0l6Xv7uKZO1dT4v18TJ1Pqpsh7aLA4rm0B8itmU_uaOd5UhRkHwNY_YA_z9MJdV2-N8fIUUukv63jtKjWh6D4GF1bckEcVJRKne4Rat9OXfpnGa19egioXxWj2jevz1B6oe0WB0irVmq2cJTY8TFE1W0wEdX_hEOnJif1YUgCS6IGMs6XrIYG4e7cClH3sxoOtPssFWQ9Q57TPQ_-LjacOY03ssK36Tcmaw8NnjgYcY3GSBAFnyT_n50-ISuKoT4kdV8h_UF1bCB2PWDkN4_hVH4DsvszDLKiClTqriwiG5STNRS4M1yPGe0-HntYrfOWlwNuhKAWKJ4xDARKOtrLTYaKzjRNKHA-0rbf98ebxBX1wyUYY7SmMr8QqiRed8dCD5X8AHjPkvxWmUyYYLdGh17-vJh3m9QKZidSXG37TYZQBlKW6Xv2nEBzli5grRv5eveMmoLgmG4_nT7oqG5ajtxB7PQTSd8zpQNzj62rO1XQmzABn4NNQ_PbRyG_dy-fokis6yeCQ_GaQdxkHMEHdVfnTV-uYHkHTY5y6FJnMxqHYMbwxmJxNfJ3mYYnakoUgBoBu4i9-WupnKRrIe6I0FyPwNDwh0uZXRSSlxmAyt8MaAiFw=w2880-h1530-ft)
 
-## Exercise1: Implement an oven controller
+[![Build Status](https://travis-ci.org/Hyp-ed/hyped-2020.svg?branch=develop)](https://travis-ci.org/Hyp-ed/hyped-2020)
+[![Coverage Status](https://codecov.io/gh/hyp-ed/hyped-2020/branch/develop/graph/badge.svg)](https://codecov.io/gh/hyp-ed/hyped-2020)
 
-We covered the basic architecture of the pod software by reviewing [its simplified version](https://github.com/Hyp-ed/hyped-demo/tree/develop/src).
-But talking and doing are very different things. By implementing something even simpler that still follows the same structure as the real pod software,
-you should get an even more useful perspective on the pod software.
 
-The task is to implement a controller for a simple imaginary oven described in this [video](https://youtu.be/-Yicg2TTMPs). It has two user inputs: an
-on/off switch and a temperature dial.
+This is the official repository of HYPED. HYPED is a student society at the University of Edinburgh dedicated to accelerating the development of Hyperloop and implementing the technology in the UK. HYPED is advancing both technical and commercial development of Hyperloop, having seen success in two international competitions. https://hyp-ed.com/
 
-I suggest the oven controller has 4 modules:
-* **Thermometer module** - updates the current temperature inside the oven
-* **Heating element controller module** - adds heat to the oven when state machine is in the appropriate state (otherwise the oven slowly loses heat,
-  but don't worry about realistic physics, make it simple)
-* **User interface module** - watches the on/off switch and the desired temperature dial in the following way:
-  1. Wait for user input in terminal
-  2. If it is an on/off command or a number representing the desired temperature, communicate the news to other modules
-  3. Print some info about the current state of the oven (e.g. actual temperature and current state machine state)
-  4. Repeat steps 1-4 indefinitely
-* **State machine module** - implements the three states and the transitions from the [video](https://youtu.be/-Yicg2TTMPs)
+## Coding Style
 
-Other uggestions:
-* You can join the thermometer and heater into a single module to make things simpler.
-* If you know of a better way to implement the user interface, please share. But this is not the point of the exercise, so you should spend as little
-  time on it as possible.
-* Copy stuff from the [pod code](https://github.com/Hyp-ed/hyped-demo/). You will probably want the Makefiles and some of the utils, especially `Thread`
-  and maybe `Logger` and `System` (`System` processes command line arguments among other things).
-* You can use group programming to do the initial setup (directory structure, Makefiles,...) - one person shares their screen and the rest of the group
-  tells them what to do.
-* Afterwards, you can split tasks and parallelise. You can use feature branches and pull requests to practice the actual HYPED workflow if you want.
+Since we will have dozens of developers coding for the pod, it is very important that everyone adheres to the same code style. For that purpose we have created the following [style guide](https://hyp-ed.github.io/styleguide/).
 
-### Rules
-* Work in two groups (State Machine and QA) and create two copies of the oven controller. Create and use `stm-develop1` and `qa-develop1` branches
-  in this repo for the implementations.
-* Keep the architecture the same as the pod software has - central data structure for communication between modules, each module in its own thread
-* Adhere to the HYPED [style guide](https://hyp-ed.github.io/styleguide/)
+## Building and Running Unit Tests
+To build and run the unit test suite use `make testrunner`. An executable will be generated at `test/testrunner`. 
+
+To include more tests, add them under `test/src` and add the file path to `test/Test.files`

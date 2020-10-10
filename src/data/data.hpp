@@ -69,6 +69,14 @@ struct Telemetry {
   uint32_t target_temperature;
 }
 
+//
+// Temperature
+//
+struct Sensors {
+  bool critical_failure;
+  double temperature;
+}
+
 // -------------------------------------------------------------------------------------------------
 // Common Data structure/class
 // -------------------------------------------------------------------------------------------------

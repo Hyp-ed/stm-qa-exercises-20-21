@@ -59,6 +59,16 @@ struct StateMachine {
   State current_state;
 };
 
+//
+// Telemetry
+//
+
+struct Telemetry {
+  bool critical_failure;
+  bool is_on;
+  uint32_t target_temperature;
+}
+
 // -------------------------------------------------------------------------------------------------
 // Common Data structure/class
 // -------------------------------------------------------------------------------------------------

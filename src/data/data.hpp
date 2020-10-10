@@ -49,17 +49,6 @@ enum class ModuleStatus {
 // State Machine States
 // -------------------------------------------------------------------------------------------------
 enum State {
-  kIdle,
-  kCalibrating,
-  kReady,
-  kAccelerating,
-  kNominalBraking,
-  kEmergencyBraking,
-  kRunComplete,
-  kFailureStopped,
-  kExiting,
-  kFinished,
-  kInvalid,
   num_states
 };
 
@@ -165,12 +154,9 @@ class Data {
 
  private:
   StateMachine state_machine_;
-  Navigation navigation_;
   Sensors sensors_;
   Motors motors_;
-  Batteries batteries_;
   Telemetry telemetry_;
-  Brakes brakes_;
 
 
   // locks for data substructures

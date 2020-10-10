@@ -27,7 +27,7 @@
 #include "data/data.hpp"
 #include "utils/concurrent/thread.hpp"
 
-#include "sensors/interface.hpp"
+#include "heating/interface.hpp"
 #include "utils/system.hpp"
 
 using std::array;

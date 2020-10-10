@@ -1,4 +1,4 @@
-/*
+ /*
  * Organisation: HYPED
  * Date:
  * Description: Class for data exchange between sub-team threads and structures
@@ -48,16 +48,6 @@ struct Module {
   ModuleStatus module_status = ModuleStatus::kStart;
 };
 
-// -------------------------------------------------------------------------------------------------
-// Navigation
-// -------------------------------------------------------------------------------------------------
-typedef float NavigationType;
-struct Navigation : public Module {
-  NavigationType  distance;  // m
-  NavigationType  velocity;  // m/s
-  NavigationType  acceleration;  // m/s^2
-  NavigationType  braking_distance = 750;  // m
-};
 
 // -------------------------------------------------------------------------------------------------
 // Raw Sensor data
@@ -67,7 +57,7 @@ struct SensorData {
 };
 
 struct ImuData : public SensorData {
-  NavigationType acc_x;
+  float acc_x;
 };
 
 struct Sensors : public Module {
@@ -78,59 +68,34 @@ struct Sensors : public Module {
 struct BatteryData {
   static constexpr int kNumCells = 36;
   uint16_t  voltage;                    // dV
+  int16_t   current;                    // dA
   uint8_t   charge;                     // %
   int8_t    average_temperature;        // C
+  // below only for BMSHP! Value for BMSLP = 0
+  uint16_t  cell_voltage[kNumCells];    // mV
+  int8_t    low_temperature;            // C
+  int8_t    high_temperature;           // C
+  uint16_t  low_voltage_cell;           // mV
+  uint16_t  high_voltage_cell;          // mV
+  bool      imd_fault;
 };
 
-struct Batteries : public Module {
+struct Batteries : public Module {  
   static constexpr int kNumBatteries = 3;
-
   array<BatteryData, kNumBatteries> readings;
-};
+  };
 
-struct Brakes : public Module {
-  bool engaged = false;
-};
 
-// -------------------------------------------------------------------------------------------------
-// Motor data
-// -------------------------------------------------------------------------------------------------
-
-struct Motors : public Module {
-  static constexpr int kNumMotors = 4;
-  std::array<uint32_t, kNumMotors> rpms = { {0, 0, 0, 0} };
-};
-
-// -------------------------------------------------------------------------------------------------
-// Telemetry data
-// -------------------------------------------------------------------------------------------------
-
-struct Telemetry : public Module {
-  static constexpr float run_length = 1250;  // m
-  bool calibrate_command = false;
-  bool launch_command = false;
-  bool reset_command = false;
-  bool service_propulsion_go = false;
-  bool emergency_stop_command = false;
-  bool nominal_braking_command = true;
-};
 
 // -------------------------------------------------------------------------------------------------
 // State Machine States
 // -------------------------------------------------------------------------------------------------
 enum State {
-  kIdle,
-  kCalibrating,
-  kReady,
-  kAccelerating,
-  kNominalBraking,
-  kEmergencyBraking,
-  kRunComplete,
-  kFailureStopped,
-  kExiting,
-  kFinished,
-  kInvalid,
-  num_states
+  kOff,
+  kHeating,
+  kIdling,
+  kEmergency,
+
 };
 
 extern const char* states[num_states];
@@ -159,20 +124,14 @@ class Data {
    */
   StateMachine getStateMachineData();
 
+  Batteries getBatteriesData();
+  
+  void setBatteriesData(Batteries& battery);
+
   /**
    * @brief      Should be called by state machine team to update data.
    */
   void setStateMachineData(const StateMachine& sm_data);
-
-  /**
-   * @brief      Retrieves data produced by navigation sub-team.
-   */
-  Navigation getNavigationData();
-
-  /**
-   * @brief      Should be called by navigation sub-team whenever they have new data.
-   */
-  void setNavigationData(const Navigation& nav_data);
 
   /**
    * @brief      Retrieves data from all sensors
@@ -193,65 +152,14 @@ class Data {
    */
   void setSensorsImuData(const DataPoint<ImuData>& imu);
 
-  /**
-   * @brief      Retrieves data from the batteries.
-   */
-  Batteries getBatteriesData();
-
-  /**
-   * @brief      Should be called to update battery data
-   */
-  void setBatteriesData(const Batteries& batteries_data);
-
-  /**
-   * @brief      Retrieves data from the brakes.
-   */
-  Brakes getBrakesData();
-
-  /**
-   * @brief      Should be called to update brakes data
-   */
-  void setBrakesData(const Brakes& brakes_data);
-
-  /**
-   * @brief      Retrieves data produced by each of the four motors.
-   */
-  Motors getMotorData();
-
-  /**
-   * @brief      Should be called to update motor data.
-   */
-  void setMotorData(const Motors& motor_data);
-
-  /**
-   * @brief      Retrieves data on whether stop/kill power commands have been issued.
-   */
-  Telemetry getTelemetryData();
-
-  /**
-   * @brief      Should be called to update communications data.
-   */
-  void setTelemetryData(const Telemetry& telemetry_data);
-
  private:
   StateMachine state_machine_;
-  Navigation navigation_;
   Sensors sensors_;
-  Motors motors_;
-  Batteries batteries_;
-  Telemetry telemetry_;
-  Brakes brakes_;
-
-
   // locks for data substructures
   Lock lock_state_machine_;
-  Lock lock_navigation_;
   Lock lock_sensors_;
-  Lock lock_motors_;
-
-  Lock lock_telemetry_;
   Lock lock_batteries_;
-  Lock lock_brakes_;
+
 
   Data() {}
 

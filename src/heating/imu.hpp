@@ -1,3 +1,4 @@
+
 /*
  * Author: Branislav Pilnan
  * Organisation: HYPED
@@ -23,7 +24,7 @@
 
 #include <vector>
 
-#include "sensors/interface.hpp"
+#include "heating/interface.hpp"
 #include "utils/logger.hpp"
 
 namespace hyped {

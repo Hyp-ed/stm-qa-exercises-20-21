@@ -24,7 +24,7 @@
 
 #include <cstdint>
 
-#include "sensors/interface.hpp"
+#include "heating/interface.hpp"
 #include "bms_manager.hpp"
 #include "imu_manager.hpp"
 #include "utils/system.hpp"

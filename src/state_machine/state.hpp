@@ -47,13 +47,9 @@ class State {
 
   Logger&               log_;
   data::Data&           data_;
-
-  data::Telemetry       telemetry_data_;
-  data::Navigation      nav_data_;
   data::StateMachine    sm_data_;
-  data::Motors          motor_data_;
   data::Sensors         sensors_data_;
-  data::Brakes          brakes_data_;
+ 
 
  protected:
   Main* state_machine_;

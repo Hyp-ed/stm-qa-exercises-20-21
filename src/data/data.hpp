@@ -5,32 +5,29 @@
  * for holding data produced by each of the sub-teams.
  *
  *    Copyright 2019 HYPED
- *    Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- *    except in compliance with the License. You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software distributed under
- *    the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- *    either express or implied. See the License for the specific language governing permissions and
- *    limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
-
 
 #ifndef DATA_DATA_HPP_
 #define DATA_DATA_HPP_
 
-#include <cstdint>
-#include <array>
 #include "data/data_point.hpp"
 #include "utils/concurrent/lock.hpp"
 
-using std::array;
-
-namespace hyped {
+namespace oven {
 
 // imports
-using utils::concurrent::Lock;
+using hyped::utils::concurrent::Lock;
 
 namespace data {
 
@@ -38,51 +35,50 @@ namespace data {
 // Global Module States
 // -------------------------------------------------------------------------------------------------
 enum class ModuleStatus {
-  kStart,   // Initial module state
-  kInit,  // SM transistions to Calibrating if all modules have Init status.
-  kReady,  // SM transistions to Ready if Motors and Navigation have the Ready status.
+  kStart,  // Initial module state
+  kInit,   // SM transistions to Calibrating if all modules have Init status.
+  kReady,  // SM transistions to Ready if Motors and Navigation have the Ready
+           // status.
   kCriticalFailure  // SM transitions to EmergencyBraking/FailureStopped
 };
-
 
 // -------------------------------------------------------------------------------------------------
 // State Machine States
 // -------------------------------------------------------------------------------------------------
-enum State {
-  num_states
-};
-
-extern const char* states[num_states];
+enum State { num_states };
 
 struct StateMachine {
   bool critical_failure;
   State current_state;
 };
 
-//
+// -------------------------------------------------------------------------------------------------
 // Telemetry
-//
+// -------------------------------------------------------------------------------------------------
 
-struct Telemetry {
+struct UserInterface {
   bool critical_failure;
   bool is_on;
   uint32_t target_temperature;
-}
+};
 
-//
+// -------------------------------------------------------------------------------------------------
 // Temperature
-//
-struct Sensors {
+// -------------------------------------------------------------------------------------------------
+
+struct Thermometer {
   bool critical_failure;
   double temperature;
-}
+};
 
+// -------------------------------------------------------------------------------------------------
 // Motor
-//
-struct Motor{
+// -------------------------------------------------------------------------------------------------
+
+struct Heating {
   bool critical_failure;
   float rate;
-}
+};
 
 // -------------------------------------------------------------------------------------------------
 // Common Data structure/class
@@ -94,115 +90,73 @@ struct Motor{
 class Data {
  public:
   /**
-   * @brief      Always returns a reference to the only instance of `Data`.
+   * @brief   Always returns a reference to the only instance of `Data`.
    */
-  static Data& getInstance();
+  static Data &getInstance();
 
   /**
-   * @brief      Retrieves data related to the state machine. Data has high priority.
+   * @brief   Retrieves data related to the state machine.
    */
   StateMachine getStateMachineData();
 
   /**
-   * @brief      Should be called by state machine team to update data.
+   * @brief   Should be called by the state machine team to update data.
    */
-  void setStateMachineData(const StateMachine& sm_data);
+  void setStateMachineData(const StateMachine &sm_data);
 
   /**
-   * @brief      Retrieves data produced by navigation sub-team.
+   * @brief   Retrieves data related to the user interface.
    */
-  Navigation getNavigationData();
+  UserInterface getUserInterfaceData();
 
   /**
-   * @brief      Should be called by navigation sub-team whenever they have new data.
+   * @brief   Should be called by the user interface team to update data.
    */
-  void setNavigationData(const Navigation& nav_data);
+  void setUserInterfaceData(const UserInterface &ui_data);
 
   /**
-   * @brief      Retrieves data from all sensors
+   * @brief   Retrieves data related to the thermometer.
    */
-  Sensors getSensorsData();
+  Thermometer getThermometerData();
 
   /**
-   * @brief retrieves imu data from Sensors
+   * @brief   Should be called by the thermometer team to update data.
    */
-  DataPoint<ImuData> getSensorsImuData();
+  void setThermometerData(const Thermometer &tm_data);
 
   /**
-   * @brief      Should be called to update sensor data.
+   * @brief   Retrieves data related to the heating controller.
    */
-  void setSensorsData(const Sensors& sensors_data);
-  /**
-   * @brief      Should be called to update sensor imu data.
-   */
-  void setSensorsImuData(const DataPoint<ImuData>& imu);
+  Heating getHeatingData();
 
   /**
-   * @brief      Retrieves data from the batteries.
+   * @brief   Should be called by the heating controller team to update data.
    */
-  Batteries getBatteriesData();
-
-  /**
-   * @brief      Should be called to update battery data
-   */
-  void setBatteriesData(const Batteries& batteries_data);
-
-  /**
-   * @brief      Retrieves data from the brakes.
-   */
-  Brakes getBrakesData();
-
-  /**
-   * @brief      Should be called to update brakes data
-   */
-  void setBrakesData(const Brakes& brakes_data);
-
-  /**
-   * @brief      Retrieves data produced by each of the four motors.
-   */
-  Motors getMotorData();
-
-  /**
-   * @brief      Should be called to update motor data.
-   */
-  void setMotorData(const Motors& motor_data);
-
-  /**
-   * @brief      Retrieves data on whether stop/kill power commands have been issued.
-   */
-  Telemetry getTelemetryData();
-
-  /**
-   * @brief      Should be called to update communications data.
-   */
-  void setTelemetryData(const Telemetry& telemetry_data);
+  void setHeatingData(const Heating &ht_data);
 
  private:
   StateMachine state_machine_;
-  Sensors sensors_;
-  Motors motors_;
-  Telemetry telemetry_;
-
+  UserInterface user_interface_;
+  Thermometer thermometer_;
+  Heating heating_;
 
   // locks for data substructures
   Lock lock_state_machine_;
-  Lock lock_navigation_;
-  Lock lock_sensors_;
-  Lock lock_motors_;
+  Lock lock_user_interface_;
+  Lock lock_thermometer_;
+  Lock lock_heating_;
 
-  Lock lock_telemetry_;
-  Lock lock_batteries_;
-  Lock lock_brakes_;
-
-  Data() {}
+  Data() {
+  }
 
  public:
-  Data(const Data&) = delete;
-  Data& operator=(const Data &) = delete;
-  Data(Data &&) = delete;
-  Data & operator=(Data &&) = delete;
+  Data(const Data &) = delete;
+  Data &operator=(const Data &) = delete;
+  Data(Data &&)                 = delete;
+  Data &operator=(Data &&) = delete;
 };
 
-}}  // namespace hyped::data
+}  // namespace data
+}  // namespace oven
 
 #endif  // DATA_DATA_HPP_

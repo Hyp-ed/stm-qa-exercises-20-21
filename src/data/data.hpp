@@ -45,7 +45,12 @@ enum class ModuleStatus {
 // -------------------------------------------------------------------------------------------------
 // State Machine States
 // -------------------------------------------------------------------------------------------------
-enum State { num_states };
+enum State { 
+  kOff,
+  kHeating,
+  kIdling,
+  num_states 
+  };
 
 struct StateMachine {
   bool critical_failure;

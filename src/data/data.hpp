@@ -48,6 +48,35 @@ struct Module {
   ModuleStatus module_status = ModuleStatus::kStart;
 };
 
+// -------------------------------------------------------------------------------------------------
+// Heating Element Controller
+// -------------------------------------------------------------------------------------------------
+
+struct HeatingElement : public Module {
+  float heat_increment;
+  bool is_heating;
+  bool critical_failure;
+
+};
+
+// -------------------------------------------------------------------------------------------------
+// Thermometer
+// -------------------------------------------------------------------------------------------------
+
+struct Thermometer : public Module {
+  double current_temp;
+  bool critical_failure;
+};
+
+// -------------------------------------------------------------------------------------------------
+// User Interface
+// -------------------------------------------------------------------------------------------------
+
+struct UserInterface {
+  bool is_on;
+  bool critical_failure;
+  uint16_t target_temp;
+};
 
 // -------------------------------------------------------------------------------------------------
 // Raw Sensor data
@@ -80,7 +109,7 @@ struct BatteryData {
   bool      imd_fault;
 };
 
-struct Batteries : public Module {  
+struct Batteries : public Module {
   static constexpr int kNumBatteries = 3;
   array<BatteryData, kNumBatteries> readings;
   };
@@ -123,10 +152,51 @@ class Data {
   /**
    * @brief      Retrieves data related to the state machine. Data has high priority.
    */
+
+  /**
+   * @brief      Retrieves Heating data
+   * @returns    Heating Data
+  */
+  HeatingElement getHeatingElementData();
+
+  /**
+   *@brief       Should be called to update Heating data
+  */
+  void setHeatingElementData (const HeatingElement& heating_data);
+
+  /**
+   * @brief Get the Thermometer Data object
+   *
+   * @return Thermometer
+   */
+  Thermometer getThermometerData();
+
+  /**
+   * @brief Set the Thermometer Data object
+   *
+   * @param thermo_data
+   */
+  void setThermometerData(const Thermometer& thermo_data);
+
+  /**
+   * @brief Get the User Interface Data object
+   *
+   * @return UserInterface
+   */
+  UserInterface getUserInterfaceData();
+
+  /**
+   * @brief Set the User Interface Data object
+   *
+   * @param ui_data
+   */
+  void setUserInterfaceData(const UserInterface& ui_data);
+
+
   StateMachine getStateMachineData();
 
   Batteries getBatteriesData();
-  
+
   void setBatteriesData(Batteries& battery);
 
   /**
@@ -153,14 +223,24 @@ class Data {
    */
   void setSensorsImuData(const DataPoint<ImuData>& imu);
 
+
+
+
+
  private:
   StateMachine state_machine_;
   Sensors sensors_;
+  HeatingElement heating_element_;
+  Thermometer thermometer_;
+  UserInterface user_interface_;
+
   // locks for data substructures
   Lock lock_state_machine_;
   Lock lock_sensors_;
   Lock lock_batteries_;
-
+  Lock lock_heating_element_;
+  Lock lock_thermometer_;
+  Lock lock_user_interface_;
 
   Data() {}
 

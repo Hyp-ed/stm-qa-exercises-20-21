@@ -56,16 +56,8 @@ struct HeatingElement : public Module {
   float heat_increment;
   bool is_heating;
   bool critical_failure;
-
-};
-
-// -------------------------------------------------------------------------------------------------
-// Thermometer
-// -------------------------------------------------------------------------------------------------
-
-struct Thermometer : public Module {
   double current_temp;
-  bool critical_failure;
+
 };
 
 // -------------------------------------------------------------------------------------------------
@@ -165,20 +157,6 @@ class Data {
   void setHeatingElementData (const HeatingElement& heating_data);
 
   /**
-   * @brief Get the Thermometer Data object
-   *
-   * @return Thermometer
-   */
-  Thermometer getThermometerData();
-
-  /**
-   * @brief Set the Thermometer Data object
-   *
-   * @param thermo_data
-   */
-  void setThermometerData(const Thermometer& thermo_data);
-
-  /**
    * @brief Get the User Interface Data object
    *
    * @return UserInterface
@@ -231,7 +209,6 @@ class Data {
   StateMachine state_machine_;
   Sensors sensors_;
   HeatingElement heating_element_;
-  Thermometer thermometer_;
   UserInterface user_interface_;
 
   // locks for data substructures
@@ -239,7 +216,6 @@ class Data {
   Lock lock_sensors_;
   Lock lock_batteries_;
   Lock lock_heating_element_;
-  Lock lock_thermometer_;
   Lock lock_user_interface_;
 
   Data() {}

@@ -50,7 +50,6 @@ class State {
   data::StateMachine    sm_data_;
   data::Sensors         sensors_data_;
   data::HeatingElement heating_data;
-  data::Thermometer thermometer_data;
   data::UserInterface user_interface_data;
 
 

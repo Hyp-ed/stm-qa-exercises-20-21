@@ -22,7 +22,6 @@ namespace hyped{
     }
   void Heating::transitionCheck(){
     heating_data = data_.getHeatingElementData();
-    thermometer_data = data_.getThermometerData();
     sm_data_ =data_.getStateMachineData();
     user_interface_data = data_.getUserInterfaceData();
     if(!user_interface_data.is_on){
@@ -42,7 +41,6 @@ namespace hyped{
     }
   void Idle::transitionCheck(){
     heating_data = data_.getHeatingElementData();
-    thermometer_data = data_.getThermometerData();
     sm_data_ = data_.getStateMachineData();
     user_interface_data = data_.getUserInterfaceData();
     if (!user_interface_data.is_on) {

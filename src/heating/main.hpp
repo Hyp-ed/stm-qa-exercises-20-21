@@ -25,37 +25,39 @@
 #include <cstdint>
 
 #include "heating/interface.hpp"
+#include "heating/heating.hpp"
 #include "bms_manager.hpp"
 #include "imu_manager.hpp"
 #include "utils/system.hpp"
 
-namespace hyped {
 
-namespace sensors {
+namespace hyped {
+using data::Data;
+using data::State;
+using hyped::data::ModuleStatus;
+using hyped::data::StateMachine;
+using utils::Logger;
+using utils::System;
+using utils::concurrent::Thread;
+
+namespace heating {
 
 /**
  * @brief Initialise sensors, data instances to be pulled in managers
  *        gpio threads and adc checks declared in main
  */
-class Main: public Thread {
+class Main : public Thread {
  public:
-  Main(uint8_t id, utils::Logger& log);
-  void run() override;    // from thread
+  explicit Main(uint8_t id, Logger& log);
+  void run() override;
+
 
  private:
-  data::Data&     data_;
-  utils::System&  sys_;
-  utils::Logger&  log_;
-
-  // master data structures
-  data::Sensors   sensors_;
-  data::Batteries batteries_;
-
-  ImuManager*     imu_manager_;
-  BmsManager*     battery_manager_;
-  bool            log_error_ = false;
+  Logger& log_;
+  System& sys_;
+  Heating heat_;
 };
-
-}}  // namespace hyped::sensors
+}}
+  // namespace hyped::sensors
 
 #endif  // SENSORS_MAIN_HPP_

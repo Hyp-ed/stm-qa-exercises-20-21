@@ -31,7 +31,7 @@ namespace hyped{
       state_machine_->current_state_ = state_machine_->off_;
       log_.DBG("STM", "Transitioned to 'Off'");
       }
-    else if(thermometer_data.current_temp>user_interface_data.target_temp){
+    else if(heating_data.current_temp>user_interface_data.target_temp){
       log_.INFO("STM", "Target Temperature surpassed");
       sm_data_.current_state = data::State::kIdling;
       data_.setStateMachineData(sm_data_);
@@ -50,7 +50,7 @@ namespace hyped{
       state_machine_->current_state_ = state_machine_->off_;
       log_.DBG("STM", "Transitioned to 'Off'");
       }
-     else if (thermometer_data.current_temp <= user_interface_data.target_temp) {
+     else if (heating_data.current_temp <= user_interface_data.target_temp) {
       log_.INFO("STM", "Temperature too low");
       sm_data_.current_state = data::State::kIdling;
       data_.setStateMachineData(sm_data_);

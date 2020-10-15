@@ -49,9 +49,9 @@ class Main: public Thread {
   void run() override;
 
   State          *current_state_;
-  Ready          *ready_;
-  Accelerating   *accelerating_;
-  Finished       *finished_;
+  Off          *off_;
+  Heating   *heating_;
+  Idle       *idle_;
 };
 
 }  // namespace state_machine

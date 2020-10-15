@@ -49,15 +49,18 @@ class State {
   data::Data&           data_;
   data::StateMachine    sm_data_;
   data::Sensors         sensors_data_;
- 
+  data::HeatingElement heating_data;
+  data::Thermometer thermometer_data;
+  data::UserInterface user_interface_data;
+
 
  protected:
   Main* state_machine_;
 };
 
-class Ready : public State {
+class Off : public State {
  public:
-  Ready(Logger& log, Main* state_machine) : State(log, state_machine) {}
+  Off(Logger& log, Main* state_machine) : State(log, state_machine) {}
 
   /*
    * @brief   Checks for launch command
@@ -65,9 +68,9 @@ class Ready : public State {
   void transitionCheck();
 };
 
-class Accelerating : public State {
+class Heating : public State {
  public:
-  Accelerating(Logger& log, Main* state_machine) : State(log, state_machine) {}
+  Heating(Logger& log, Main* state_machine) : State(log, state_machine) {}
 
   /*
    * @brief   Checks if max distance reached
@@ -75,9 +78,9 @@ class Accelerating : public State {
   void transitionCheck();
 };
 
-class Finished : public State {
+class Idle : public State {
  public:
-  Finished(Logger& log, Main* state_machine) : State(log, state_machine) {}
+  Idle(Logger& log, Main* state_machine) : State(log, state_machine) {}
 
   /*
    * @brief   Checks if command to reset was sent

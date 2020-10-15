@@ -14,13 +14,17 @@ namespace heating {
 
   class Heating {
     public:
-      void HeatingState(Logger &logger);
-      ModuleStatus Heating::getHeatingState() const;
+      explicit Heating(Logger &logger);
+      ModuleStatus getHeatingStatus() const;
+      void applyHeat();
+      void removeHeat();
+
 
     private:
       ModuleStatus module_status_;
-      Logger &logger_;
+      Logger &log_;
       Data &data_;
+      unsigned int update_counter_;
   };
 } //namespace heating
 } //namespace hyped

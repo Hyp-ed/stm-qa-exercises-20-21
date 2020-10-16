@@ -40,18 +40,18 @@ using data::ModuleStatus;
 namespace state_machine {
 
 class State;
-class Ready;
-class Accelerating;
-class Finished;
+class Off;
+class Heating;
+class Idle;
 class Main: public Thread {
  public:
   explicit Main(uint8_t id, Logger& log);
   void run() override;
 
-  State          *current_state_;
-  Off          *off_;
-  Heating   *heating_;
-  Idle       *idle_;
+  State       *current_state_;
+  Off         *off_;
+  Heating     *heating_;
+  Idle        *idle_;
 };
 
 }  // namespace state_machine

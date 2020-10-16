@@ -48,7 +48,6 @@ class State {
   Logger&               log_;
   data::Data&           data_;
   data::StateMachine    sm_data_;
-  data::Sensors         sensors_data_;
   data::HeatingElement heating_data;
   data::UserInterface user_interface_data;
 

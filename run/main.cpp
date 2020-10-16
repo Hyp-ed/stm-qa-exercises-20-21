@@ -33,8 +33,6 @@ using hyped::utils::Logger;
 using hyped::utils::System;
 using hyped::utils::concurrent::Thread;
 
-using hyped::data::Sensors;
-
 int main(int argc, char* argv[])
 {
   System::parseArgs(argc, argv);

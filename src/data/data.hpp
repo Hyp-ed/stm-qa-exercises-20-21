@@ -73,38 +73,11 @@ struct UserInterface {
 // -------------------------------------------------------------------------------------------------
 // Raw Sensor data
 // -------------------------------------------------------------------------------------------------
-struct SensorData {
-  bool operational;
-};
 
-struct ImuData : public SensorData {
-  float acc_x;
-};
 
-struct Sensors : public Module {
-  static constexpr int kNumImus = 1;
-  DataPoint<ImuData> imu;
-};
 
-struct BatteryData {
-  static constexpr int kNumCells = 36;
-  uint16_t  voltage;                    // dV
-  int16_t   current;                    // dA
-  uint8_t   charge;                     // %
-  int8_t    average_temperature;        // C
-  // below only for BMSHP! Value for BMSLP = 0
-  uint16_t  cell_voltage[kNumCells];    // mV
-  int8_t    low_temperature;            // C
-  int8_t    high_temperature;           // C
-  uint16_t  low_voltage_cell;           // mV
-  uint16_t  high_voltage_cell;          // mV
-  bool      imd_fault;
-};
 
-struct Batteries : public Module {
-  static constexpr int kNumBatteries = 3;
-  array<BatteryData, kNumBatteries> readings;
-  };
+
 
 
 
@@ -141,9 +114,6 @@ class Data {
    */
   static Data& getInstance();
 
-  /**
-   * @brief      Retrieves data related to the state machine. Data has high priority.
-   */
 
   /**
    * @brief      Retrieves Heating data
@@ -170,36 +140,17 @@ class Data {
    */
   void setUserInterfaceData(const UserInterface& ui_data);
 
-
+  /**
+   * @brief      Should be called by state machine team to get data.
+   */
   StateMachine getStateMachineData();
 
-  Batteries getBatteriesData();
-
-  void setBatteriesData(Batteries& battery);
 
   /**
    * @brief      Should be called by state machine team to update data.
    */
   void setStateMachineData(const StateMachine& sm_data);
 
-  /**
-   * @brief      Retrieves data from all sensors
-   */
-  Sensors getSensorsData();
-
-  /**
-   * @brief retrieves imu data from Sensors
-   */
-  DataPoint<ImuData> getSensorsImuData();
-
-  /**
-   * @brief      Should be called to update sensor data.
-   */
-  void setSensorsData(const Sensors& sensors_data);
-  /**
-   * @brief      Should be called to update sensor imu data.
-   */
-  void setSensorsImuData(const DataPoint<ImuData>& imu);
 
 
 
@@ -207,16 +158,14 @@ class Data {
 
  private:
   StateMachine state_machine_;
-  Sensors sensors_;
   HeatingElement heating_element_;
   UserInterface user_interface_;
 
   // locks for data substructures
   Lock lock_state_machine_;
-  Lock lock_sensors_;
-  Lock lock_batteries_;
   Lock lock_heating_element_;
   Lock lock_user_interface_;
+
 
   Data() {}
 

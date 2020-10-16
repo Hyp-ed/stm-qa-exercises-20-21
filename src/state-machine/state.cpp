@@ -14,23 +14,6 @@ State::State(Logger& log, Main* state_machine)
     state_machine_(state_machine)
 {}
 
-void State::checkEmergencyStop()
-{
-  telemetry_data_ = data_.getTelemetryData();
-  sm_data_        = data_.getStateMachineData();
-
-  if (telemetry_data_.emergency_stop_command) {
-    log_.ERR("STM", "STOP command received");
-    telemetry_data_.emergency_stop_command = false;
-    data_.setTelemetryData(telemetry_data_);
-
-    sm_data_.current_state = data::State::kFinished;
-    data_.setStateMachineData(sm_data_);
-
-    state_machine_->current_state_ = state_machine_->finished_;
-  }
-}
-
 // Off state
 
 void Off::transitionCheck()
@@ -70,10 +53,10 @@ void Heating::transitionCheck()
     log_.DBG("STM", "Transitioned to 'Off'");
   }
 
-  if (thermometer_data_.temperature > user_interface_data.target_temperature) {
+  if (thermometer_data_.temperature > user_interface_data_.target_temperature) {
     log_.INFO("STM", "max temperature passed");
     log_.INFO("STM", "current temperature: %fm, target temperature: %fm",
-              thermometer_data_.temperature, user_interface_data.target_temperature);
+              thermometer_data_.temperature, user_interface_data_.target_temperature);
 
     sm_data_.current_state = data::State::kIdling;
     data_.setStateMachineData(sm_data_);
@@ -103,10 +86,10 @@ void Idling::transitionCheck()
     log_.DBG("STM", "Transitioned to 'Off'");
   }
 
-  if (thermometer_data_.temperature <= user_interface_data.target_temperature) {
+  if (thermometer_data_.temperature <= user_interface_data_.target_temperature) {
     log_.INFO("STM", "returning to normal limits");
     log_.INFO("STM", "current temperature: %fm, target temperature: %fm",
-              thermometer_data_.temperature, user_interface_data.target_temperature);
+              thermometer_data_.temperature, user_interface_data_.target_temperature);
 
     sm_data_.current_state = data::State::kHeating;
     data_.setStateMachineData(sm_data_);
@@ -121,4 +104,3 @@ void Idling::transitionCheck()
 }
 
 }  // namespace state_machine
-}  // namespace hyped

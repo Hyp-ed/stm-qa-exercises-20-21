@@ -92,15 +92,7 @@ class Config {
     int button[4];
   } embrakes;
 
-  struct Sensors {
-    int chip_select[data::Sensors::kNumImus];
-    int keyence_l;
-    int keyence_r;
-    int thermistor;
-    int master;
-    std::vector<int> hp_shutoff;
-    int checktime;
-  } sensors;
+
 
   struct MotorControl {
     int isFaulty;

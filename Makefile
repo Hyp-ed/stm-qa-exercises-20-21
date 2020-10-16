@@ -13,11 +13,11 @@ VERBOSE := 0
 RELEASE := 0
 
 # Include helper files
-#HELPERS_DIR  := utils/build
-#include $(HELPERS_DIR)/config.mk
-#include $(HELPERS_DIR)/build.mk
-#include $(HELPERS_DIR)/libs.mk
-#include $(HELPERS_DIR)/test.mk
+HELPERS_DIR  := utils/build
+include $(HELPERS_DIR)/config.mk
+include $(HELPERS_DIR)/build.mk
+include $(HELPERS_DIR)/libs.mk
+include $(HELPERS_DIR)/test.mk
 
 .DEFAULT_GOAL := default
 default: $(DEPENDENCIES) lint $(TARGET)

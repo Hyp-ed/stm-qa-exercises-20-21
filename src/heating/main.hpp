@@ -23,12 +23,9 @@
 #define SENSORS_MAIN_HPP_
 
 #include <cstdint>
-
-#include "heating/interface.hpp"
 #include "heating/heating.hpp"
-#include "bms_manager.hpp"
-#include "imu_manager.hpp"
 #include "utils/system.hpp"
+#include "utils/concurrent/thread.hpp"
 
 
 namespace hyped {

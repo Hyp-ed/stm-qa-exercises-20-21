@@ -18,7 +18,6 @@
  *    limitations under the License.
  */
 #include <cstdint>
-
 #include "state_machine/main.hpp"
 
 namespace hyped {

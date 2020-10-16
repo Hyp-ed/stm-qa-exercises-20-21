@@ -22,7 +22,7 @@ Main::Main(uint8_t id, Logger& log) : Thread(id, log)
   */
 void Main::run()
 {
-  utils::System& sys = utils::System::getSystem();
+  System& sys = System::getSystem();
   data::Data& data = data::Data::getInstance();
 
   data::StateMachine sm_data = data.getStateMachineData();
@@ -35,7 +35,7 @@ void Main::run()
   }
 
   sm_data = data.getStateMachineData();
-  log_.INFO("STM", "Exiting. Current state: %s", data::states[sm_data.current_state]);
+  log_.INFO("STM", "Exiting. Current state: %s", sm_data.current_state);
 }
 
 }  // namespace state_machine

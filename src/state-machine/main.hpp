@@ -11,8 +11,8 @@
 
 namespace oven {
 
-using utils::concurrent::Thread;
-using utils::Logger;
+using hyped::utils::concurrent::Thread;
+using hyped::utils::Logger;
 using data::ModuleStatus;
 
 namespace state_machine {

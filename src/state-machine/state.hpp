@@ -9,7 +9,7 @@
 
 namespace oven {
 
-using utils::Logger;
+using hyped::utils::Logger;
 using data::ModuleStatus;
 
 namespace state_machine {

@@ -1,4 +1,7 @@
 #include "main.hpp"
+using hyped::utils::Logger;
+using oven::data::Data;
+using oven::data::ModuleStatus;
 
 namespace oven {
 namespace state_machine {

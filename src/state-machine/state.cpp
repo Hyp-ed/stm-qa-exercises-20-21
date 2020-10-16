@@ -1,4 +1,8 @@
-#include "state_machine/state.hpp"
+#include "state-machine/state.hpp"
+using hyped::utils::Logger;
+using hyped::utils::System;
+using oven::data::Data;
+using oven::data::ModuleStatus;
 
 namespace oven {
 
@@ -50,7 +54,7 @@ void Off::transitionCheck()
 
 void Heating::transitionCheck()
 {
-  thermometer_data_       = data_.getNavigationData();
+  thermometer_data_       = data_.getThermometerData();
   heating_data_           = data_.getHeatingData();
   sm_data_                = data_.getStateMachineData();
   user_interface_data_    = data_.getUserInterfaceData();
@@ -83,8 +87,7 @@ void Heating::transitionCheck()
 
 void Idling::transitionCheck()
 {
-  utils::System& sys = utils::System::getSystem();
-  thermometer_data_       = data_.getNavigationData();
+  thermometer_data_       = data_.getThermometerData();
   heating_data_           = data_.getHeatingData();
   sm_data_                = data_.getStateMachineData();
   user_interface_data_    = data_.getUserInterfaceData();

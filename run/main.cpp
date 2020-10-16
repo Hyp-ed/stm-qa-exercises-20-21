@@ -60,8 +60,18 @@ int main(int argc, char* argv[])
   log_system.DBG1("MAIN", "DBG1");
   log_system.DBG2("MAIN", "DBG2");
   log_system.DBG3("MAIN", "DBG3");
+  Thread *heating = new hyped::heating::Main(0, log_sensor);
 
+  // Start the threads here
+  heating->start();
+ 
 
+  // Join the threads here
+  heating->join();
+ 
+
+  delete heating;
+  
 
   return 0;
 }

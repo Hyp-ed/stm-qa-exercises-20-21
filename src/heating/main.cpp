@@ -8,10 +8,12 @@ namespace hyped{
         sys_(System::getSystem()),
         heat_(Heating(log)) {}
   void Main::run(){
+    log_.ERR("TRM", "Thermometer module started");
+
     data::Data& d_ = data::Data::getInstance();
     data::State current_state = d_.getStateMachineData().current_state;
     while(sys_.running_){
-      data::State current_state = d_.getStateMachineData().current_state;
+      current_state = d_.getStateMachineData().current_state;
       switch(current_state){
         case State::kOff:
         case State::kEmergency:
@@ -30,7 +32,6 @@ namespace hyped{
 
       }
     }
-
 
   }
   }

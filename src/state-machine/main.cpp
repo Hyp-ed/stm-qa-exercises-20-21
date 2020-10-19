@@ -30,7 +30,6 @@ void Main::run()
   data.setStateMachineData(sm_data);
 
   while (sys.running_) {
-    current_state_->checkEmergencyStop();
     current_state_->transitionCheck();
   }
 
